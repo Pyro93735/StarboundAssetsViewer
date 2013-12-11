@@ -36,7 +36,7 @@ class DispSheet(sheet.CSheet):
         sheet.CSheet.__init__(self, parent)
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
         self.row = self.col = 0
-        self.SetNumberRows(100)-
+        self.SetNumberRows(100)
         self.SetNumberCols(2)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
