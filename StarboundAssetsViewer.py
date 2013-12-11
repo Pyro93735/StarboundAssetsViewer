@@ -16,8 +16,8 @@ class MySheet(sheet.CSheet):
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
 
-        #for i in range(10):
-        #    self.SetRowSize(i, 20)
+        for i in range(10):
+            self.SetRowSize(i, 20)
 
     # def OnGridSelectCell(self, event):
         # self.row, self.col = event.GetRow(), event.GetCol()
