@@ -8,23 +8,27 @@ try:
     import wx
 except ImportError:
     raise ImportError,"The wxPython module is required to run this program"
+    
+import json
 
 class MyFile():
     #def __init__(self):
-        
-        
-    def Open(self, value):
-        self.file = open(value, 'r+') 
-        toParse = self.file.read()
-        toParse = toParse.replace("true","\"true\"")
-        toParse = toParse.replace("false","\"false\"")
-        self.data = eval(toParse)
+
+
+    def Open(self, fileLocation):
+        self.loc = fileLocation
+        file = open(fileLocation, 'r') 
+        toParse = file.read()
+        file.close()
+        self.data = json.loads(toParse)
+        print self.data
 
     def HasAttr(self, key):
         return key in self.data
         
-    #def Save(self):
-        
+    def Save(self):
+        data = json.dumps(self.data, indent=2, separators=(',', ": "))
+        print data
 
     
 class DispSheet(sheet.CSheet):
@@ -36,31 +40,33 @@ class DispSheet(sheet.CSheet):
         self.SetNumberCols(2)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
+        self.EnableCellEditControl(False)
+        self.EnableGridLines(False)
     
-    def associate(self, file):
+    def populate(self, file):
         self.file = file
-        self.populate(file.data)
-    
-    def populate(self, data):
+        self.Unbind(wx.grid.EVT_GRID_CELL_CHANGE)
         index = 0
-        for i in data.iterkeys():
-            self.SetCellValue(index, 0, i)
-            self.SetCellValue(index, 1, str(data[i]))
+        for key in file.data.iterkeys():
+            self.SetCellValue(index, 0, str(key))
+            self.SetCellValue(index, 1, str(file.data[key]))
             index = index + 1
         self.SetNumberRows(index-1)
         self.AutoSize()
+        self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
 
     def OnGridCellChange(self, event):
-        print "you lose"
-       # if hasattr(self, file)
-        
-    
-    # def OnGridSelectCell(self, event):
-        # self.row, self.col = event.GetRow(), event.GetCol()
-        # value =  self.GetColLabelValue(self.col) + self.GetRowLabelValue(self.row)
-        # self.SetCellValue(self.row, self.col, value)
-        # super(MySheet, self).OnGridSelectCell(event)
-
+        if hasattr(self, "file"):
+            key = self.GetCellValue(event.GetRow(), 0)
+            if event.GetCol() > 0: # changing a value
+                self.file.data[key] = self.GetCellValue(event.GetRow(), event.GetCol())
+            else:                  # changing an attribute
+                newkey = self.GetCellValue(event.GetRow(), event.GetCol())
+                self.file.data[newkey] = self.file.data.pop(key)
+                
+            self.file.Save()
+        else:
+            print "error editing something with no file"
 
 class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
@@ -99,5 +105,5 @@ app = wx.App(0)
 newt = MainApp(None, -1, 'SpreadSheet')
 myfile = MyFile()
 myfile.Open("platinumdrill.miningtool")
-newt.sheet1.associate(myfile)
+newt.sheet1.populate(myfile)
 app.MainLoop()
