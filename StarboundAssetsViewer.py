@@ -7,7 +7,24 @@ try:
 except ImportError:
     raise ImportError,"The wxPython module is required to run this program"
 
-class MySheet(sheet.CSheet):
+class MyFile():
+    def __init__(self, parent):
+        self.data = []
+        self.file
+        
+    def Open(value):
+        self.file = open(value, 'r+') 
+        data.append(self.file.read())
+
+    def HasAttr(value):
+        try:
+            data[value]
+            return true
+        except
+            return false
+
+    
+class DispSheet(sheet.CSheet):
     def __init__(self, parent):
         sheet.CSheet.__init__(self, parent)
         self.row = self.col = 0
@@ -31,16 +48,13 @@ class MainApp(wx.Frame):
         wx.Frame.__init__(self, parent, -1, title, size = ( 550, 500))
 
         box = wx.GridBagSizer()
-        menuBar = wx.MenuBar()
 
         self.SetSizer(box)
 
-        sheet1 = MySheet(self)
+        sheet1 = DispSheet(self)
         sheet1.SetFocus()
         searchbox = wx.TextCtrl(self,-1,value=u"try1",size=(100,20))
-        panel1 = wx.Panel(self)
         panel2 = wx.Panel(self)
-        panel1.SetBackgroundColour('Blue')
         panel2.SetBackgroundColour('Red')
 
         box.Add(searchbox, (0,0), (1,1), wx.EXPAND)
