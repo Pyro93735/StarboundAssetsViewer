@@ -26,45 +26,31 @@ class MySheet(sheet.CSheet):
         # super(MySheet, self).OnGridSelectCell(event)
 
 
-class Newt(wx.Frame):
+class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
         wx.Frame.__init__(self, parent, -1, title, size = ( 550, 500))
 
-        fonts = ['Times New Roman', 'Times', 'Courier', 'Courier New', 'Helvetica', 'Sans', 'verdana', 'utkal', 'aakar', 'Arial']
-        box = wx.BoxSizer(wx.VERTICAL)
+        box = wx.GridBagSizer()
         menuBar = wx.MenuBar()
-        
-        
-
-        menu1 = wx.Menu()
-        menuBar.Append(menu1, '&File')
-        menu2 = wx.Menu()
-        menuBar.Append(menu2, '&Edit')
-        menu3 = wx.Menu()
-        menuBar.Append(menu3, '&Edit')
-        menu4 = wx.Menu()
-        menuBar.Append(menu4, '&Insert')
-        menu5 = wx.Menu()
-        menuBar.Append(menu5, '&Format')
-        menu6 = wx.Menu()
-        menuBar.Append(menu6, '&Tools')
-        menu7 = wx.Menu()
-        menuBar.Append(menu7, '&Data')
-
-        menu7 = wx.Menu()
-        menuBar.Append(menu7, '&Help')
 
         self.SetSizer(box)
 
         sheet1 = MySheet(self)
         sheet1.SetFocus()
+        searchbox = wx.TextCtrl(self,-1,value=u"try1",size=(100,20))
+        panel1 = wx.Panel(self)
+        panel2 = wx.Panel(self)
+        panel1.SetBackgroundColour('Blue')
+        panel2.SetBackgroundColour('Red')
 
-        box.Add(sheet1, 1, wx.EXPAND)
+        box.Add(searchbox, (0,0), (1,1), wx.EXPAND)
+        box.Add(panel2, (1,0), (1,1), wx.EXPAND)
+        box.Add(sheet1, (0,1), (2,1) ,wx.EXPAND)
 
         self.CreateStatusBar()
         self.Centre()
         self.Show(True)
 
 app = wx.App(0)
-newt = Newt(None, -1, 'SpreadSheet')
+newt = MainApp(None, -1, 'SpreadSheet')
 app.MainLoop()
