@@ -62,7 +62,7 @@ class DispSheet(sheet.CSheet):
 
 class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, -1, title, size = ( 550, 500))
+        wx.Frame.__init__(self, parent, -1, title, size = ( 650, 600))
 
         box = wx.GridBagSizer()
 
