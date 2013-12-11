@@ -1,6 +1,8 @@
 #!/usr/bin/python
 # -*- coding: iso-8859-1 -*-
 
+import os
+
 try:
     from wx.lib import sheet
     import wx
@@ -30,7 +32,7 @@ class DispSheet(sheet.CSheet):
         sheet.CSheet.__init__(self, parent)
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
         self.row = self.col = 0
-        self.SetNumberRows(100)
+        self.SetNumberRows(100)-
         self.SetNumberCols(2)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
@@ -88,7 +90,9 @@ class MainApp(wx.Frame):
                            style=wx.DD_DEFAULT_STYLE
                            )
         if dlg.ShowModal() == wx.ID_OK:
-            print "You chose %s" % dlg.GetPath()
+            for root, dirs, files in os.walk(dlg.GetPath()):
+                for file in files:
+                    print file
         dlg.Destroy()
 
 app = wx.App(0)
