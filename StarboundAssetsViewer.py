@@ -33,9 +33,9 @@ class DispSheet(sheet.CSheet):
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
 
-        for i in range(10):
-            self.SetRowSize(i, 20)
-
+    def populate(data):
+        for i in data:
+            self.SetCellValue
     # def OnGridSelectCell(self, event):
         # self.row, self.col = event.GetRow(), event.GetCol()
         # value =  self.GetColLabelValue(self.col) + self.GetRowLabelValue(self.row)
