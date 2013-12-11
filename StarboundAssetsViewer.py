@@ -10,6 +10,7 @@ except ImportError:
 class MyFile():
     #def __init__(self):
         
+        
     def Open(self, value):
         self.file = open(value, 'r+') 
         toParse = self.file.read()
@@ -71,11 +72,13 @@ class MainApp(wx.Frame):
         self.sheet1.SetFocus()
         searchbox = wx.TextCtrl(self,-1,value=u"try1",size=(100,20))
         panel2 = wx.Panel(self)
+        button = wx.Button(self,-1,label="Participation Button!")
         panel2.SetBackgroundColour('Red')
 
         box.Add(searchbox, (0,0), (1,1), wx.EXPAND)
         box.Add(panel2, (1,0), (1,1), wx.EXPAND)
         box.Add(self.sheet1, (0,1), (2,1) ,wx.EXPAND)
+        box.Add(button, (3,0))
 
         self.CreateStatusBar()
         self.Centre()
