@@ -70,19 +70,26 @@ class MainApp(wx.Frame):
 
         self.sheet1 = DispSheet(self)
         self.sheet1.SetFocus()
-        searchbox = wx.TextCtrl(self,-1,value=u"try1",size=(100,20))
         panel2 = wx.Panel(self)
-        button = wx.Button(self,-1,label="Participation Button!")
+        button = wx.Button(self,-1,label="Select Directory...")		
+        button.Bind(wx.EVT_BUTTON, self.onDir)
         panel2.SetBackgroundColour('Red')
-
-        box.Add(searchbox, (0,0), (1,1), wx.EXPAND)
+		
+        box.Add(button, (0,0))
         box.Add(panel2, (1,0), (1,1), wx.EXPAND)
         box.Add(self.sheet1, (0,1), (2,1) ,wx.EXPAND)
-        box.Add(button, (3,0))
 
         self.CreateStatusBar()
         self.Centre()
         self.Show(True)
+		
+    def onDir(self, event): 
+        dlg = wx.DirDialog(self, "Choose a directory:",
+                           style=wx.DD_DEFAULT_STYLE
+                           )
+        if dlg.ShowModal() == wx.ID_OK:
+            print "You chose %s" % dlg.GetPath()
+        dlg.Destroy()
 
 app = wx.App(0)
 newt = MainApp(None, -1, 'SpreadSheet')
