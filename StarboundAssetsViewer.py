@@ -16,7 +16,7 @@ class MyFile():
         self.loc = fileLocation
 
     def Open(self):
-        file = open(self.fileLocation, 'r') 
+        file = open(self.loc, 'r') 
         toParse = file.read()
         file.close()
         self.data = json.loads(toParse)
