@@ -9,11 +9,12 @@ __name__ = "CustomGui"
 class DispTree(wx.TreeCtrl):
     def __init__(self, parent):
         wx.TreeCtrl.__init__(self, parent, size=(400,600), style=wx.TR_EDIT_LABELS | wx.TR_DEFAULT_STYLE | wx.TR_TWIST_BUTTONS)
+        self.parent = parent
         #root = self.AddRoot("Root")
-        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.Try1)
+        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.ItemActivated)
         
-    def Try1(self, event):
-        self.EditLabel(self.GetSelection())
+    def ItemActivated(self, event):
+        self.parent.sheet1.populate(self.GetItemData(event.GetItem()).GetData())
         
     def populate(self, data):
         #clear
@@ -22,11 +23,13 @@ class DispTree(wx.TreeCtrl):
         
     def AddToTree(self, itemID, data):
         if type(data) is dict:
+            self.SetItemData(itemID, wx.TreeItemData(data))
             self.AppendText(itemID, "{")
             for key, val in  data.iteritems():
                 newnode = self.AppendItem(itemID, str(key) + " : ")
                 self.AddToTree(newnode, val)
         elif type(data) is list:
+            self.SetItemData(itemID, wx.TreeItemData(data))
             self.AppendText(itemID, "[")
             index = 0
             for item in data:
@@ -53,16 +56,16 @@ class DispSheet(sheet.CSheet):
         self.SetColLabelSize(0)
         self.EnableCellEditControl(True)
         self.EnableGridLines(False)
-    
-    def populate(self, file):
-        self.file = file
+
+    def populate(self, data):
         self.Unbind(wx.grid.EVT_GRID_CELL_CHANGE)
+        self.SetNumberRows(len(data))
+        print str(len(data)) + " " + str(data)
         index = 0
-        for key in file.data.iterkeys():
+        for key in data.iterkeys():
             self.SetCellValue(index, 0, str(key))
-            self.SetCellValue(index, 1, str(file.data[key]))
+            self.SetCellValue(index, 1, str(data[key]))
             index = index + 1
-        self.SetNumberRows(index-1)
         self.AutoSize()
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
 
@@ -77,7 +80,7 @@ class DispSheet(sheet.CSheet):
             self.file.Save()
         else:
             print "error editing something with no file"
-            
+
 class FileViewer(sheet.CSheet):
     def __init__(self, parent):
         sheet.CSheet.__init__(self, parent)
