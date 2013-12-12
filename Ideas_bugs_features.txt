@@ -27,3 +27,12 @@ add rescan base dirs button in filelist
     what to do with unsaved changes?
 app icon
 sanitize input
+save file with preferences-> base dirs
+Batch editing
+    filelist-> allow select multiple. Button creates new "virtual" file with commonalities
+        saving changes in virtual file saves to all files
+    tree-> each array/ dict has common element on the bottom
+        way to batch edit every similar entry
+    sheet-> keys with different values have <various> as displayed
+        possible way to script( old value + 5)
+collapse expand all in tree
