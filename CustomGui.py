@@ -146,10 +146,10 @@ class FileViewer(sheet.CSheet):
             for file in files:
                 self.InsertRows(index)
                 self.SetCellValue(index, 0, file)
-                self.file.append(MyFile(self.file.GetPath() + "))
+                #self.file.append(MyFile(self.file.GetPath() + "))
                 index = index + 1
                 
     def OnFileSelect(self, event):
-        self.files[event.GetRow()].Open()
-        self.parent.tree.populate(self.files[event.GetRow()].data)
+        #self.files[event.GetRow()].Open()
+        #self.parent.tree.populate(self.files[event.GetRow()].data)
         print "hi:"
