@@ -66,7 +66,26 @@ class DispSheet(sheet.CSheet):
             self.file.Save()
         else:
             print "error editing something with no file"
-            
+           
+class FileViewer(sheet.CSheet):
+    def __init__(self, parent):
+        sheet.CSheet.__init__(self, parent)
+        self.SetNumberRows(0)
+        self.SetNumberCols(1)
+        self.SetRowLabelSize(0)
+        self.SetColLabelSize(0)
+        self.EnableCellEditControl(False)
+        
+    def populate(self, results):
+        index = 0
+        for root, dirs, files in results:
+            for file in files:
+                self.InsertRows(index)
+                self.SetCellValue(index, 0, file)
+                index = index + 1
+                
+	
+		   
 class DispTree(wx.TreeCtrl):
     def __init__(self, parent):
         wx.TreeCtrl.__init__(self, parent, size=(400,600), style=wx.TR_EDIT_LABELS | wx.TR_DEFAULT_STYLE | wx.TR_TWIST_BUTTONS)
@@ -114,13 +133,12 @@ class MainApp(wx.Frame):
         self.sheet1 = DispSheet(self)
         self.sheet1.SetFocus()
         self.tree = DispTree(self)
-        panel2 = wx.Panel(self)
+        self.fileSelector = FileViewer(self)
         button = wx.Button(self,-1,label="Select Directory...")		
         button.Bind(wx.EVT_BUTTON, self.onDir)
-        panel2.SetBackgroundColour('Red')
 		
         box.Add(button, (0,0))
-        box.Add(panel2, (1,0), (1,1), wx.EXPAND)
+        box.Add(self.fileSelector, (1,0), (1,1), wx.EXPAND)
         box.Add(self.tree, (0,1), (2,1), wx.EXPAND)
         box.Add(self.sheet1, (0,2), (2,1) ,wx.EXPAND)
 
@@ -133,9 +151,7 @@ class MainApp(wx.Frame):
                            style=wx.DD_DEFAULT_STYLE
                            )
         if dlg.ShowModal() == wx.ID_OK:
-            for root, dirs, files in os.walk(dlg.GetPath()):
-                for file in files:
-                    print file
+            self.fileSelector.populate(os.walk(dlg.GetPath()))
         dlg.Destroy()
 
 app = wx.App(0)
