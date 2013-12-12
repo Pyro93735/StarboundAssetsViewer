@@ -130,8 +130,10 @@ class DispSheet(sheet.CSheet):
 
 class FileViewer(sheet.CSheet):
     def __init__(self, parent):
+        self.files = []
+        self.parent = parent
         sheet.CSheet.__init__(self, parent)
-        self.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnGridCellSelected)
+        self.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnFileSelect)
         self.SetNumberRows(0)
         self.SetNumberCols(1)
         self.SetRowLabelSize(0)
@@ -144,9 +146,10 @@ class FileViewer(sheet.CSheet):
             for file in files:
                 self.InsertRows(index)
                 self.SetCellValue(index, 0, file)
+                self.file.append(MyFile(self.file.GetPath() + "))
                 index = index + 1
                 
     def OnFileSelect(self, event):
-        file = MyFile()
-        file.Open(self, location)
+        self.files[event.GetRow()].Open()
+        self.parent.tree.populate(self.files[event.GetRow()].data)
         
