@@ -21,7 +21,6 @@ class MyFile():
         toParse = file.read()
         file.close()
         self.data = json.loads(toParse)
-        print self.data
 
     def HasAttr(self, key):
         return key in self.data
@@ -67,10 +66,46 @@ class DispSheet(sheet.CSheet):
             self.file.Save()
         else:
             print "error editing something with no file"
+            
+class DispTree(wx.TreeCtrl):
+    def __init__(self, parent):
+        wx.TreeCtrl.__init__(self, parent, size=(400,600), style=wx.TR_EDIT_LABELS | wx.TR_DEFAULT_STYLE | wx.TR_TWIST_BUTTONS)
+        #root = self.AddRoot("Root")
+        self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.Try1)
+        
+    def Try1(self, event):
+        self.EditLabel(self.GetSelection())
+        
+    def populate(self, data):
+        #clear
+        root = self.AddRoot("Root")
+        self.AddToTree(root, data)
+        
+    def AddToTree(self, itemID, data):
+        if type(data) is dict:
+            self.AppendText(itemID, "{")
+            for key, val in  data.iteritems():
+                newnode = self.AppendItem(itemID, str(key) + " : ")
+                self.AddToTree(newnode, val)
+        elif type(data) is list:
+            self.AppendText(itemID, "[")
+            index = 0
+            for item in data:
+                if type(item) is dict or list:
+                    newnode = self.AppendItem(itemID, str(index) + " ")
+                    self.AddToTree(newnode, item)
+                else:
+                    newnode = self.AppendItem(itemID, str(item))
+                index = index + 1
+        else:
+            self.AppendText(itemID, str(data))
+            
+    def AppendText(self, itemID, text):
+        self.SetItemText(itemID, self.GetItemText(itemID) + text)
 
 class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
-        wx.Frame.__init__(self, parent, -1, title, size = ( 650, 600))
+        wx.Frame.__init__(self, parent, -1, title, size = ( 800, 600))
 
         box = wx.GridBagSizer()
 
@@ -78,6 +113,7 @@ class MainApp(wx.Frame):
 
         self.sheet1 = DispSheet(self)
         self.sheet1.SetFocus()
+        self.tree = DispTree(self)
         panel2 = wx.Panel(self)
         button = wx.Button(self,-1,label="Select Directory...")		
         button.Bind(wx.EVT_BUTTON, self.onDir)
@@ -85,7 +121,8 @@ class MainApp(wx.Frame):
 		
         box.Add(button, (0,0))
         box.Add(panel2, (1,0), (1,1), wx.EXPAND)
-        box.Add(self.sheet1, (0,1), (2,1) ,wx.EXPAND)
+        box.Add(self.tree, (0,1), (2,1), wx.EXPAND)
+        box.Add(self.sheet1, (0,2), (2,1) ,wx.EXPAND)
 
         self.CreateStatusBar()
         self.Centre()
@@ -104,6 +141,7 @@ class MainApp(wx.Frame):
 app = wx.App(0)
 newt = MainApp(None, -1, 'SpreadSheet')
 myfile = MyFile()
-myfile.Open("platinumdrill.miningtool")
+myfile.Open("arid.surfacebiome") #arid.surfacebiome platinumdrill.miningtool
 newt.sheet1.populate(myfile)
+newt.tree.populate(newt.sheet1.file.data)
 app.MainLoop()
