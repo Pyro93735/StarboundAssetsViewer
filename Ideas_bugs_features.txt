@@ -1,0 +1,29 @@
+Resize File list pane (maybe 100?)->User resize able panes
+Click file in list -> call func with full file path
+Change array display to be nicer
+Context menu
+    filelist-> open, save, save as, discard, new, delete?
+    Sheet->insert before, insert after, delete, expand, copy? paste?
+    tree->delete? anything?
+what to insert (dict, array, keypair)
+selecting row on sheet highlights on tree (make sure is visible method)
+search bar
+    filelist->act as filter, only display files with term in name(or ext)
+    tree-> search, each return finds next named element in tree. selects. only keys
+    sheet-> finds keys and values
+Filelist. color background if unsaved changes
+sheet add column for original data if modified. color modified text/background differently
+tree highlight modified tree path
+have an add base directory button in the file list to pull other files from (ie mods folder)
+tooltip
+    filelist: full path
+    tree and sheet: parents of hovered item?
+button on sheet that activates one node up (parent)
+Shortcuts
+bottom status bar has full path of file specified and modified
+ability to reload from disk (around tree area?)
+maintain order?
+add rescan base dirs button in filelist
+    what to do with unsaved changes?
+app icon
+sanitize input

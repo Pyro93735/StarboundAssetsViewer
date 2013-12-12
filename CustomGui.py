@@ -60,12 +60,18 @@ class DispSheet(sheet.CSheet):
     def populate(self, data):
         self.Unbind(wx.grid.EVT_GRID_CELL_CHANGE)
         self.SetNumberRows(len(data))
-        print str(len(data)) + " " + str(data)
         index = 0
-        for key in data.iterkeys():
-            self.SetCellValue(index, 0, str(key))
-            self.SetCellValue(index, 1, str(data[key]))
-            index = index + 1
+        if type(data) is dict:
+            
+            for key in data.iterkeys():
+                self.SetCellValue(index, 0, str(key))
+                self.SetCellValue(index, 1, str(data[key]))
+                index = index + 1
+        else:   #assume type array
+            for i in data:
+                self.SetCellValue(index, 0, str(index))
+                self.SetCellValue(index, 1, str(i))
+                index = index + 1
         self.AutoSize()
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
 
