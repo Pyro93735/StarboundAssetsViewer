@@ -18,6 +18,7 @@ class DispTree(wx.TreeCtrl):
         if type(data) is dict or list:
             self.parent.sheet1.populate(event.GetItem(), self)
         else:
+            print "trying stuff"
             self.parent.sheet1.populate(self.GetItemParent(event.GetItem()), self)
             #select cell
         

@@ -12,11 +12,11 @@ except ImportError:
 import json
 
 class MyFile():
-    #def __init__(self):
-
-    def Open(self, fileLocation):
+    def __init__(self, fileLocation):
         self.loc = fileLocation
-        file = open(fileLocation, 'r') 
+
+    def Open(self):
+        file = open(self.fileLocation, 'r') 
         toParse = file.read()
         file.close()
         self.data = json.loads(toParse)
