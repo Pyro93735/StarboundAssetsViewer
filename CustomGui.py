@@ -14,11 +14,16 @@ class DispTree(wx.TreeCtrl):
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.ItemActivated)
         
     def ItemActivated(self, event):
-        self.parent.sheet1.populate(self.GetItemData(event.GetItem()).GetData())
+        data = self.GetItemData(event.GetItem()).GetData()
+        if type(data) is dict or list:
+            self.parent.sheet1.populate(event.GetItem(), self)
+        else:
+            self.parent.sheet1.populate(self.GetItemParent(event.GetItem()), self)
+            #select cell
         
     def populate(self, data):
         #clear
-        root = self.AddRoot("Root")
+        root = self.AddRoot("Root ")
         self.AddToTree(root, data)
         
     def AddToTree(self, itemID, data):
@@ -44,31 +49,43 @@ class DispTree(wx.TreeCtrl):
             
     def AppendText(self, itemID, text):
         self.SetItemText(itemID, self.GetItemText(itemID) + text)
+        
+    def Children(self,itemID):
+        (node,cookie) = self.GetFirstChild(itemID)
+        while node.IsOk():
+            yield node
+            (node, cookie) = self.GetNextChild(itemID, cookie)
 
 class DispSheet(sheet.CSheet):
     def __init__(self, parent):
         sheet.CSheet.__init__(self, parent)
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
+        self.Bind(wx.grid.EVT_GRID_SELECT_CELL, self.OnGridCellSelected)
         self.row = self.col = 0
         self.SetNumberRows(100)
         self.SetNumberCols(2)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
-        self.EnableCellEditControl(True)
+        #self.EnableCellEditControl(True)
         self.EnableGridLines(False)
 
-    def populate(self, data):
+    def populate(self, node, tree):
+        self.node = node
+        self.tree = tree
+        self.data = tree.GetItemData(node).GetData()
+        self.SetNumberRows(tree.GetChildrenCount(node, False))
+        self.children = []
         self.Unbind(wx.grid.EVT_GRID_CELL_CHANGE)
-        self.SetNumberRows(len(data))
+        for child in tree.Children(node):
+            self.children.append(child)   
         index = 0
-        if type(data) is dict:
-            
-            for key in data.iterkeys():
+        if type(self.data) is dict:
+            for key in self.data.iterkeys():
                 self.SetCellValue(index, 0, str(key))
-                self.SetCellValue(index, 1, str(data[key]))
+                self.SetCellValue(index, 1, str(self.data[key]))
                 index = index + 1
         else:   #assume type array
-            for i in data:
+            for i in self.data:
                 self.SetCellValue(index, 0, str(index))
                 self.SetCellValue(index, 1, str(i))
                 index = index + 1
@@ -86,6 +103,12 @@ class DispSheet(sheet.CSheet):
             self.file.Save()
         else:
             print "error editing something with no file"
+            
+    def OnGridCellSelected(self, event):
+        self.tree.EnsureVisible(self.children[event.GetRow()])
+        self.tree.SelectItem(self.children[event.GetRow()])
+        
+        
 
 class FileViewer(sheet.CSheet):
     def __init__(self, parent):

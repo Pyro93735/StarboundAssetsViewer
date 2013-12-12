@@ -36,3 +36,4 @@ Batch editing
     sheet-> keys with different values have <various> as displayed
         possible way to script( old value + 5)
 collapse expand all in tree
+stipe background colors on sheet
