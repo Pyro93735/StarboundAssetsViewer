@@ -2,8 +2,7 @@
 # -*- coding: iso-8859-1 -*-
 
 import os
-import DispSheet
-import DispTree
+import CustomGui
 try:
     from wx.lib import sheet
     import wx
@@ -28,28 +27,6 @@ class MyFile():
     def Save(self):
         data = json.dumps(self.data, indent=2, separators=(',', ": "))
         print data
-     
-
-            
-class FileViewer(sheet.CSheet):
-    def __init__(self, parent):
-        sheet.CSheet.__init__(self, parent)
-        self.SetNumberRows(0)
-        self.SetNumberCols(1)
-        self.SetRowLabelSize(0)
-        self.SetColLabelSize(0)
-        self.EnableCellEditControl(False)
-        
-    def populate(self, results):
-        index = 0
-        for root, dirs, files in results:
-            for file in files:
-                self.InsertRows(index)
-                self.SetCellValue(index, 0, file)
-                index = index + 1
-                
-	
-		   
 
 class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
@@ -59,10 +36,10 @@ class MainApp(wx.Frame):
 
         self.SetSizer(box)
 
-        self.sheet1 = DispSheet.DispSheet(self)
+        self.sheet1 = CustomGui.DispSheet(self)
         self.sheet1.SetFocus()
-        self.tree = DispTree.DispTree(self)
-        self.fileSelector = FileViewer(self)
+        self.tree = CustomGui.DispTree(self)
+        self.fileSelector = CustomGui.FileViewer(self)
         button = wx.Button(self,-1,label="Select Directory...")		
         button.Bind(wx.EVT_BUTTON, self.onDir)
 		
