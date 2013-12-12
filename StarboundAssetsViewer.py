@@ -91,7 +91,7 @@ class DispTree(wx.TreeCtrl):
             self.AppendText(itemID, "[")
             index = 0
             for item in data:
-                if type(item) is dict or list:
+                if type(item) is dict or type(item) is list:
                     newnode = self.AppendItem(itemID, str(index) + " ")
                     self.AddToTree(newnode, item)
                 else:
