@@ -28,6 +28,7 @@ class DispTree(wx.TreeCtrl):
         self.DeleteAllItems()
         root = self.AddRoot("Root ")
         self.AddToTree(root, data)
+        self.Expand(root)
         
     def AddToTree(self, itemID, data):
         if type(data) is dict:
