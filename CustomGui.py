@@ -150,8 +150,11 @@ class FileViewer(sheet.CSheet):
             for file in files:
                 self.InsertRows(index)
                 self.SetCellValue(index, 0, file)
-                self.files.append(Utility.MyFile(os.path.join(root, file)))
+                print os.path.splitext(file)[1][1:]
+                if os.path.splitext(file)[1][1:] is not "png" or "lua":
+                    self.files.append(Utility.MyFile(os.path.join(root, file)))
                 index = index + 1
+                    
                 
     def OnFileSelect(self, event):
         self.files[event.GetRow()].Open()
