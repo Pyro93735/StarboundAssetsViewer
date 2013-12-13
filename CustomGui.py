@@ -25,7 +25,7 @@ class DispTree(wx.TreeCtrl):
             #select cell
         
     def populate(self, data):
-        #clear
+        self.DeleteAllItems()
         root = self.AddRoot("Root ")
         self.AddToTree(root, data)
         
