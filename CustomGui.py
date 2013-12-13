@@ -100,16 +100,12 @@ class DispSheet(sheet.CSheet):
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
 
     def OnGridCellChange(self, event):
-        if hasattr(self, "file"):
-            key = self.GetCellValue(event.GetRow(), 0)
-            if event.GetCol() > 0: # changing a value
-                self.file.data[key] = self.GetCellValue(event.GetRow(), event.GetCol())
-            else:                  # changing an attribute
-                newkey = self.GetCellValue(event.GetRow(), event.GetCol())
-                self.file.data[newkey] = self.file.data.pop(key)
-            self.file.Save()
-        else:
-            print "error editing something with no file"
+        key = self.GetCellValue(event.GetRow(), 0)
+        if event.GetCol() > 0: # changing a value
+            self.data[key] = self.GetCellValue(event.GetRow(), event.GetCol())
+        else:                  # changing an attribute
+            newkey = self.GetCellValue(event.GetRow(), event.GetCol())
+            self.data[newkey] = self.data.pop(key)
             
     def OnGridCellSelected(self, event):
         #remove editor
