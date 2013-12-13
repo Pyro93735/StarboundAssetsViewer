@@ -29,6 +29,7 @@ class DispTree(wx.TreeCtrl):
         root = self.AddRoot("Root ")
         self.AddToTree(root, data)
         self.Expand(root)
+        self.parent.sheet1.populate(root, self)
         
     def AddToTree(self, itemID, data):
         if type(data) is dict:
