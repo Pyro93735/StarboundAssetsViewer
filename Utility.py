@@ -16,10 +16,8 @@ class MyFile():
         return key in self.data
         
     def Save(self):
-        data = json.dumps(self.data, indent=2, separators=(',', ": "))
+        toSave = json.dumps(self.data, indent=2, separators=(',', ": "))
         file = open(self.loc, 'w')
-        toSave = json.dumps(self.data)
-        print toSave
         file.write(toSave)
         file.flush()
         file.close()

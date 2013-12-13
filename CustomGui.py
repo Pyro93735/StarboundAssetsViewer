@@ -100,17 +100,13 @@ class DispSheet(sheet.CSheet):
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
 
     def OnGridCellChange(self, event):
-        if hasattr(self, "file"):
-            key = self.GetCellValue(event.GetRow(), 0)
-            if event.GetCol() > 0: # changing a value
-                self.file.data[key] = self.GetCellValue(event.GetRow(), event.GetCol())
-            else:                  # changing an attribute
-                newkey = self.GetCellValue(event.GetRow(), event.GetCol())
-                self.file.data[newkey] = self.file.data.pop(key)
-            self.file.Save()
-        else:
-            print "error editing something with no file"
-            
+        key = self.GetCellValue(event.GetRow(), 0)
+        if event.GetCol() > 0: # changing a value
+            self.data[key] = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
+        else:                  # changing an attribute
+            newkey = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
+            self.data[newkey] = self.data.pop(key)
+
     def OnGridCellSelected(self, event):
         #remove editor
         self.row = event.GetRow()
@@ -130,7 +126,6 @@ class DispSheet(sheet.CSheet):
         else:
             self.EnableCellEditControl()
             self.ShowCellEditControl()
-        
 
 class FileViewer(sheet.CSheet):
     def __init__(self, parent):
@@ -154,9 +149,24 @@ class FileViewer(sheet.CSheet):
                 if os.path.splitext(file)[1][1:] is not "png" or "lua":
                     self.files.append(Utility.MyFile(os.path.join(root, file)))
                 index = index + 1
-                    
+        self.AutoSize()
                 
     def OnFileSelect(self, event):
         self.files[event.GetRow()].Open()
         self.parent.tree.populate(self.files[event.GetRow()].data)
         self.lastSelected = event.GetRow()
+
+    #parse string into json types
+def TryToParse(string):
+    try:
+        if float(string) == int(string):
+            return int(string)
+        else:
+            return float(string)
+    except:
+        if string == "false" or "False":
+            return False
+        elif string == "true" or "True":
+            return True
+        else:
+            return string

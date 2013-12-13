@@ -22,6 +22,7 @@ class MainApp(wx.Frame):
         self.sheet1.SetFocus()
         self.tree = CustomGui.DispTree(self)
         self.fileSelector = CustomGui.FileViewer(self)
+        self.fileSelector.SetMinSize((200,600))
         openButton = wx.Button(self,-1,label="Open")
         saveButton = wx.Button(self,-1,label="Save")		
         openButton.Bind(wx.EVT_BUTTON, self.onOpen)
@@ -30,8 +31,8 @@ class MainApp(wx.Frame):
         box.Add(openButton, (0,0))
         box.Add(saveButton, (1,0))
         box.Add(self.fileSelector, (2,0), (1,1), wx.EXPAND)
-        box.Add(self.tree, (0,1), (2,1), wx.EXPAND)
-        box.Add(self.sheet1, (0,2), (2,1) ,wx.EXPAND)
+        box.Add(self.tree, (0,1), (3,1), wx.EXPAND)
+        box.Add(self.sheet1, (0,2), (3,1) ,wx.EXPAND)
 
         self.CreateStatusBar()
         self.Centre()
