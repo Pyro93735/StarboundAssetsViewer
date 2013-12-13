@@ -156,3 +156,4 @@ class FileViewer(sheet.CSheet):
     def OnFileSelect(self, event):
         self.files[event.GetRow()].Open()
         self.parent.tree.populate(self.files[event.GetRow()].data)
+        self.lastSelected = event.GetRow()

@@ -24,8 +24,8 @@ class MainApp(wx.Frame):
         self.fileSelector = CustomGui.FileViewer(self)
         openButton = wx.Button(self,-1,label="Open")
         saveButton = wx.Button(self,-1,label="Save")		
-        openButton.Bind(wx.EVT_BUTTON, self.onDir)		
-        saveButton.Bind(wx.EVT_BUTTON, self.onDir)
+        openButton.Bind(wx.EVT_BUTTON, self.onOpen)
+        saveButton.Bind(wx.EVT_BUTTON, self.onSave)
 		
         box.Add(openButton, (0,0))
         box.Add(saveButton, (1,0))
@@ -46,6 +46,7 @@ class MainApp(wx.Frame):
         dirText.Destroy()
         
     def onSave(self, event): 
+        self.fileSelector.files[self.fileSelector.lastSelected].Save()
 
 def main():
     app = wx.App(0)
