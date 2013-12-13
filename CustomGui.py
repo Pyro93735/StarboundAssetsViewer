@@ -102,11 +102,11 @@ class DispSheet(sheet.CSheet):
     def OnGridCellChange(self, event):
         key = self.GetCellValue(event.GetRow(), 0)
         if event.GetCol() > 0: # changing a value
-            self.data[key] = self.GetCellValue(event.GetRow(), event.GetCol())
+            self.data[key] = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
         else:                  # changing an attribute
-            newkey = self.GetCellValue(event.GetRow(), event.GetCol())
+            newkey = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
             self.data[newkey] = self.data.pop(key)
-            
+
     def OnGridCellSelected(self, event):
         #remove editor
         self.row = event.GetRow()
@@ -126,7 +126,6 @@ class DispSheet(sheet.CSheet):
         else:
             self.EnableCellEditControl()
             self.ShowCellEditControl()
-        
 
 class FileViewer(sheet.CSheet):
     def __init__(self, parent):
@@ -148,8 +147,24 @@ class FileViewer(sheet.CSheet):
                 self.SetCellValue(index, 0, file)
                 self.files.append(Utility.MyFile(os.path.join(root, file)))
                 index = index + 1
+        self.AutoSize()
                 
     def OnFileSelect(self, event):
         self.files[event.GetRow()].Open()
         self.parent.tree.populate(self.files[event.GetRow()].data)
         self.lastSelected = event.GetRow()
+
+    #parse string into json types
+def TryToParse(string):
+    try:
+        if float(string) == int(string):
+            return int(string)
+        else:
+            return float(string)
+    except:
+        if string == "false" or "False":
+            return False
+        elif string == "true" or "True":
+            return True
+        else:
+            return string

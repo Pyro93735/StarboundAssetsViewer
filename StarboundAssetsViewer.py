@@ -22,6 +22,7 @@ class MainApp(wx.Frame):
         self.sheet1.SetFocus()
         self.tree = CustomGui.DispTree(self)
         self.fileSelector = CustomGui.FileViewer(self)
+        self.fileSelector.SetMinSize((200,600))
         openButton = wx.Button(self,-1,label="Open")
         saveButton = wx.Button(self,-1,label="Save")		
         openButton.Bind(wx.EVT_BUTTON, self.onOpen)
