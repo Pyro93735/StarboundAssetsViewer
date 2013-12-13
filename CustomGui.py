@@ -3,6 +3,8 @@
 
 from wx.lib import sheet
 import wx
+import os
+import Utility
 
 __name__ = "CustomGui"
 
@@ -142,14 +144,13 @@ class FileViewer(sheet.CSheet):
         
     def populate(self, results):
         index = 0
-        for root, dirs, files in results:
+        for root, dirs, files in results: 
             for file in files:
                 self.InsertRows(index)
                 self.SetCellValue(index, 0, file)
-                #self.file.append(MyFile(self.file.GetPath() + "))
+                self.files.append(Utility.MyFile(os.path.join(root, file)))
                 index = index + 1
                 
     def OnFileSelect(self, event):
-        #self.files[event.GetRow()].Open()
-        #self.parent.tree.populate(self.files[event.GetRow()].data)
-        print "hi:"
+        self.files[event.GetRow()].Open()
+        self.parent.tree.populate(self.files[event.GetRow()].data)

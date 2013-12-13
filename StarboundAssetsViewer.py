@@ -3,30 +3,12 @@
 
 import os
 import CustomGui
+import Utility
 try:
     from wx.lib import sheet
     import wx
 except ImportError:
     raise ImportError,"The wxPython module is required to run this program"
-    
-import json
-
-class MyFile():
-    def __init__(self, fileLocation):
-        self.loc = fileLocation
-
-    def Open(self):
-        file = open(self.loc, 'r') 
-        toParse = file.read()
-        file.close()
-        self.data = json.loads(toParse)
-
-    def HasAttr(self, key):
-        return key in self.data
-        
-    def Save(self):
-        data = json.dumps(self.data, indent=2, separators=(',', ": "))
-        print data
 
 class MainApp(wx.Frame):
     def __init__(self, parent, id, title):
@@ -63,7 +45,7 @@ class MainApp(wx.Frame):
 def main():
     app = wx.App(0)
     newt = MainApp(None, -1, 'StarBooundAssetEditor')
-    myfile = MyFile("arid.surfacebiome")
+    myfile = Utility.MyFile("arid.surfacebiome")
     myfile.Open() #arid.surfacebiome platinumdrill.miningtool
     #newt.sheet1.populate(myfile)
     newt.tree.populate(myfile.data)
