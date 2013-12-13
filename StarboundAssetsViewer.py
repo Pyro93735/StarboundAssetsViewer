@@ -22,11 +22,14 @@ class MainApp(wx.Frame):
         self.sheet1.SetFocus()
         self.tree = CustomGui.DispTree(self)
         self.fileSelector = CustomGui.FileViewer(self)
-        button = wx.Button(self,-1,label="Select Directory...")		
-        button.Bind(wx.EVT_BUTTON, self.onDir)
+        openButton = wx.Button(self,-1,label="Open")
+        saveButton = wx.Button(self,-1,label="Save")		
+        openButton.Bind(wx.EVT_BUTTON, self.onDir)		
+        saveButton.Bind(wx.EVT_BUTTON, self.onDir)
 		
-        box.Add(button, (0,0))
-        box.Add(self.fileSelector, (1,0), (1,1), wx.EXPAND)
+        box.Add(openButton, (0,0))
+        box.Add(saveButton, (1,0))
+        box.Add(self.fileSelector, (2,0), (1,1), wx.EXPAND)
         box.Add(self.tree, (0,1), (2,1), wx.EXPAND)
         box.Add(self.sheet1, (0,2), (2,1) ,wx.EXPAND)
 
@@ -34,13 +37,15 @@ class MainApp(wx.Frame):
         self.Centre()
         self.Show(True)
 
-    def onDir(self, event): 
-        dlg = wx.DirDialog(self, "Choose a directory:",
+    def onOpen(self, event): 
+        dirText = wx.DirDialog(self, "Choose a directory:",
                            style=wx.DD_DEFAULT_STYLE
                            )
-        if dlg.ShowModal() == wx.ID_OK:
-            self.fileSelector.populate(os.walk(dlg.GetPath()))
-        dlg.Destroy()
+        if dirText.ShowModal() == wx.ID_OK:
+            self.fileSelector.populate(os.walk(dirText.GetPath()))
+        dirText.Destroy()
+        
+    def onSave(self, event): 
 
 def main():
     app = wx.App(0)
