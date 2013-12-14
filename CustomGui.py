@@ -128,6 +128,9 @@ class DispSheet(sheet.CSheet):
             self.ShowCellEditControl()
 
 class FileViewer(sheet.CSheet):
+
+    
+
     def __init__(self, parent):
         self.files = []
         self.parent = parent
@@ -143,14 +146,14 @@ class FileViewer(sheet.CSheet):
         
     def populate(self, results):
         index = 0
+        excludedFiletypes = ['.png','.lua','.wav'] 
         for root, dirs, files in results: 
             for file in files:
-                self.InsertRows(index)
-                self.SetCellValue(index, 0, file)
-                if file.endswith('png'):
-                # or file.endswith('.lua') or file.endswith('.wav')
+                 if not file.endswith(tuple(excludedFiletypes)):
+                    self.InsertRows(index)
+                    self.SetCellValue(index, 0, file)               
                     self.files.append(Utility.MyFile(os.path.join(root, file)))
-                index = index + 1
+                    index = index + 1
         self.AutoSize()
                 
     def OnFileSelect(self, event):
