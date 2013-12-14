@@ -1,5 +1,5 @@
 import json
-
+import string
 __name__ = "Utility"
 
 class MyFile():
@@ -10,7 +10,11 @@ class MyFile():
         file = open(self.loc, 'r') 
         toParse = file.read()
         file.close()
-        self.data = json.loads(toParse)
+        jsonSafe = ""
+        for line in toParse.splitlines(True):
+            if '//' not in line:
+                jsonSafe += line
+        self.data = json.loads(jsonSafe)
 
     def HasAttr(self, key):
         return key in self.data

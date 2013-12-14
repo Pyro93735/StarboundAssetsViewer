@@ -28,15 +28,15 @@ class FileViewer(sheet.CSheet):
         return self.GetCellValue(row, 0)
 
     def populate(self, results):
-        index = 0
-        excludedFiletypes = ['.png','.lua','.wav', '.psd'] 
+        index = self.GetNumberRows()
+        excludedFiletypes = ['.png','.lua','.wav', '.psd', '.log'] 
         for root, dirs, files in results: 
             for file in files:
                  if not file.endswith(tuple(excludedFiletypes)):
                     self.InsertRows(index)
                     self.SetCellValue(index, 0, file)               
                     self.files.append(Utility.MyFile(os.path.join(root, file)))
-                    index = index + 1
+                    index += 1
         #self.AutoSize()
                 
     def OnFileSelect(self, event):
