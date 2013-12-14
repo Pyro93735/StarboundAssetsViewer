@@ -12,7 +12,7 @@ class DispSheet(sheet.CSheet):
         self.Bind(wx.grid.EVT_GRID_CELL_LEFT_CLICK, self.OnGridCellSelected)
         self.Bind(wx.grid.EVT_GRID_CELL_LEFT_DCLICK, self.OnGridCellDClick)
         self.row = self.col = 0
-        self.SetNumberRows(1)
+        self.SetNumberRows(0)
         self.SetNumberCols(2)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
