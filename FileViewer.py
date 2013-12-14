@@ -47,6 +47,7 @@ class FileViewer(sheet.CSheet):
         self.files[row].Open()
         self.parent.tree.populate(self.files[row].data)
         self.lastSelected = row
+        self.parent.SetStatusText(self.GetFileName(row))
         
     def SpawnContextMenu(self, event):
         self.SelectRow(event.GetRow())
