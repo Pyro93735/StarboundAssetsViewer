@@ -2,7 +2,9 @@
 # -*- coding: iso-8859-1 -*-
 
 import os
-import CustomGui
+import FileViewer
+import DispTree
+import DispSheet
 import Utility
 try:
     from wx.lib import sheet
@@ -18,10 +20,10 @@ class MainApp(wx.Frame):
 
         self.SetSizer(box)
 
-        self.sheet1 = CustomGui.DispSheet(self)
+        self.sheet1 = DispSheet.DispSheet(self)
         self.sheet1.SetFocus()
-        self.tree = CustomGui.DispTree(self)
-        self.fileSelector = CustomGui.FileViewer(self)
+        self.tree = DispTree.DispTree(self)
+        self.fileSelector = FileViewer.FileViewer(self)
         self.fileSelector.SetMinSize((200,600))
         openButton = wx.Button(self,-1,label="Open")
         saveButton = wx.Button(self,-1,label="Save")		

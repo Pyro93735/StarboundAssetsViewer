@@ -1,6 +1,4 @@
 Resize File list pane (maybe 100?)->User resize able panes
-Click file in list -> call func with full file path
-Change array display to be nicer
 Context menu
     filelist-> open, save, save as, discard, new, delete?
     Sheet->insert before, insert after, delete, expand, copy? paste?

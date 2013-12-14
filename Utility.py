@@ -21,3 +21,17 @@ class MyFile():
         file.write(toSave)
         file.flush()
         file.close()
+
+def TryToParse(string):
+    try:
+        if float(string) == int(string):
+            return int(string)
+        else:
+            return float(string)
+    except:
+        if string == "false" or "False":
+            return False
+        elif string == "true" or "True":
+            return True
+        else:
+            return string
