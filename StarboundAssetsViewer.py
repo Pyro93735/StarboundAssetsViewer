@@ -27,6 +27,7 @@ class MainApp(wx.Frame):
         self.tree = DispTree.DispTree(self)
         self.fileSelector = FileViewer.FileViewer(self)
         self.fileSelector.SetMinSize((150,600))
+        #clearButton = wx.BitmapButton(self, -1, bitmap=wx.Image('clear.ico', wx.BITMAP_TYPE_ANY).ConvertToBitmap(), size=(20,20))
         openButton = wx.Button(self,-1,label="Open", size=(37,20))
         saveButton = wx.Button(self,-1,label="Save", size=(37,20))
         clearButton = wx.Button(self,-1,label="Clear", size=(37,20))
