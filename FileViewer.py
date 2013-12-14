@@ -32,19 +32,24 @@ class FileViewer(sheet.CSheet):
         self.AutoSize()
                 
     def OnFileSelect(self, event):
-        self.files[event.GetRow()].Open()
-        self.parent.tree.populate(self.files[event.GetRow()].data)
-        self.lastSelected = event.GetRow()
+        self.OpenFile(event.GetRow())
 
+    def OpenFile(self, row):
+        self.files[row].Open()
+        self.parent.tree.populate(self.files[row].data)
+        self.lastSelected = row
+        
     def SpawnContextMenu(self, event):
         print "right clicked"
-        menu = FVPopupMenu()
+        menu = FVPopupMenu(self, event)
         self.PopupMenu(menu, event.GetPosition())
         menu.Destroy()
 
 class FVPopupMenu(wx.Menu):
-    def __init__(self):
+    def __init__(self, fileViewer, event):
         wx.Menu.__init__(self)
+        self.fileViewer = fileViewer
+        self.rclickevent = event
 
         item = wx.MenuItem(self, wx.NewId(), "Open")
         self.AppendItem(item)
@@ -71,10 +76,10 @@ class FVPopupMenu(wx.Menu):
         self.Bind(wx.EVT_MENU, self.Delete, item)
 
     def Open(self, event):
-        print "Func Exec"
+        self.fileViewer.OpenFile(self.rclickevent.GetRow())
 
     def Save(self, event):
-        print "Func Exec"
+        self.fileViewer.files[self.rclickevent.GetRow()].Save()
 
     def SaveAs(self, event):
         print "Func Exec"

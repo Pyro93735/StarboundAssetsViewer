@@ -46,7 +46,7 @@ class DispSheet(sheet.CSheet):
     def OnGridCellChange(self, event):
         key = self.GetCellValue(event.GetRow(), 0)
         if event.GetCol() > 0: # changing a value
-            self.data[key] = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
+            self.data[key] = Utility.TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
         else:                  # changing an attribute
             newkey = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
             self.data[newkey] = self.data.pop(key)
