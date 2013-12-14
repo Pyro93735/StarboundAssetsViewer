@@ -59,10 +59,6 @@ class MainApp(wx.Frame):
 def main():
     app = wx.App(0)
     newt = MainApp(None, -1, 'StarBooundAssetEditor')
-    myfile = Utility.MyFile("arid.surfacebiome")
-    myfile.Open() #arid.surfacebiome platinumdrill.miningtool
-    #newt.sheet1.populate(myfile)
-    newt.tree.populate(myfile.data)
     app.MainLoop()
     
 if __name__ == "__main__":
