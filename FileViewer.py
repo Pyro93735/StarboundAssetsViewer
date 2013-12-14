@@ -18,7 +18,14 @@ class FileViewer(sheet.CSheet):
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
         self.SetColSize(0, 150)
-        self.EnableCellEditControl(False)
+        self.DisableDragColSize()
+        self.DisableDragRowSize()
+        self.DisableCellEditControl()
+        self.EnableEditing(False)
+        InstallGridHint(self, self.GetFileName)
+
+    def GetFileName(self, row):
+        return self.GetCellValue(row, 0)
 
     def populate(self, results):
         index = 0
@@ -35,16 +42,20 @@ class FileViewer(sheet.CSheet):
     def OnFileSelect(self, event):
         self.OpenFile(event.GetRow())
 
-    def OpenFile(self, row):
+    def OpenFile(self, row): 
+        self.SetGridCursor(row, 0)
         self.files[row].Open()
         self.parent.tree.populate(self.files[row].data)
         self.lastSelected = row
         
     def SpawnContextMenu(self, event):
-        print "right clicked"
+        self.SelectRow(event.GetRow())
+        self.DisableCellEditControl()
         menu = FVPopupMenu(self, event)
         self.PopupMenu(menu, event.GetPosition())
         menu.Destroy()
+        self.ClearSelection()
+        event.Veto()
 
 class FVPopupMenu(wx.Menu):
     def __init__(self, fileViewer, event):
@@ -93,3 +104,23 @@ class FVPopupMenu(wx.Menu):
 
     def Delete(self, event):
         print "Func Exec"
+
+def InstallGridHint(grid, rowcolhintcallback):
+    prev_rowcol = [None,None]
+    def OnMouseMotion(evt):
+        # evt.GetRow() and evt.GetCol() would be nice to have here,
+        # but as this is a mouse event, not a grid event, they are not
+        # available and we need to compute them by hand.
+        x, y = grid.CalcUnscrolledPosition(evt.GetPosition())
+        row = grid.YToRow(y)
+        col = grid.XToCol(x)
+
+        if (row,col) != prev_rowcol and row >= 0 and col >= 0:
+            prev_rowcol[:] = [row,col]
+            hinttext = rowcolhintcallback(row)
+            if hinttext is None:
+                hinttext = ''
+            grid.GetGridWindow().SetToolTipString(hinttext)
+        evt.Skip()
+
+    wx.EVT_MOTION(grid.GetGridWindow(), OnMouseMotion)
