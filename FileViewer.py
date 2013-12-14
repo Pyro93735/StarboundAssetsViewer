@@ -22,7 +22,7 @@ class FileViewer(sheet.CSheet):
 
     def populate(self, results):
         index = 0
-        excludedFiletypes = ['.png','.lua','.wav'] 
+        excludedFiletypes = ['.png','.lua','.wav', '.psd'] 
         for root, dirs, files in results: 
             for file in files:
                  if not file.endswith(tuple(excludedFiletypes)):
