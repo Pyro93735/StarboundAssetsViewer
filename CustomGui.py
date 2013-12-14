@@ -139,14 +139,16 @@ class FileViewer(sheet.CSheet):
         self.SetColLabelSize(0)
         self.EnableCellEditControl(False)
         
+        
+        
     def populate(self, results):
         index = 0
         for root, dirs, files in results: 
             for file in files:
                 self.InsertRows(index)
                 self.SetCellValue(index, 0, file)
-                print os.path.splitext(file)[1][1:]
-                if os.path.splitext(file)[1][1:] is not "png" or "lua":
+                if file.endswith('png'):
+                # or file.endswith('.lua') or file.endswith('.wav')
                     self.files.append(Utility.MyFile(os.path.join(root, file)))
                 index = index + 1
         self.AutoSize()
