@@ -26,6 +26,7 @@ class MyFile():
         file.flush()
         file.close()
 
+        
 def TryToParse(string):
     try:
         if float(string) == int(string):

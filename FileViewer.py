@@ -56,6 +56,10 @@ class FileViewer(sheet.CSheet):
         menu.Destroy()
         self.ClearSelection()
         event.Veto()
+        
+    def cleanUp(self):
+        self.SetNumberRows(0)
+        self.files = []
 
 class FVPopupMenu(wx.Menu):
     def __init__(self, fileViewer, event):
