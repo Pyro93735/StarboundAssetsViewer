@@ -17,6 +17,7 @@ class FileViewer(sheet.CSheet):
         self.SetNumberCols(1)
         self.SetRowLabelSize(0)
         self.SetColLabelSize(0)
+        self.SetColSize(0, 150)
         self.EnableCellEditControl(False)
 
     def populate(self, results):
@@ -29,7 +30,7 @@ class FileViewer(sheet.CSheet):
                     self.SetCellValue(index, 0, file)               
                     self.files.append(Utility.MyFile(os.path.join(root, file)))
                     index = index + 1
-        self.AutoSize()
+        #self.AutoSize()
                 
     def OnFileSelect(self, event):
         self.OpenFile(event.GetRow())
