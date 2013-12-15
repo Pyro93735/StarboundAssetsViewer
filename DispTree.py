@@ -4,6 +4,7 @@ import os
 import Utility
 
 __name__ = "DispTree"
+MODCOLOR = '#B20000'
 
 class DispTree(wx.TreeCtrl):
     def __init__(self, parent, sheet):
@@ -42,12 +43,9 @@ class DispTree(wx.TreeCtrl):
             self.AppendText(itemID, "[")
             index = 0
             for item in data[0]:
-                if type(item[0]) is dict or type(item[0]) is list:
-                    newnode = self.AppendItem(itemID, str(index) + " ")
-                    self.AddToTree(newnode, item)
-                else:
-                    newnode = self.AppendItem(itemID, str(item[0]))
-                index = index + 1
+                newnode = self.AppendItem(itemID, str(index) + " ")
+                self.AddToTree(newnode, item)
+                index += 1
         else:
             self.AppendText(itemID, str(data[0]))
             
@@ -59,3 +57,16 @@ class DispTree(wx.TreeCtrl):
         while node.IsOk():
             yield node
             (node, cookie) = self.GetNextChild(itemID, cookie)
+
+    def Modified(self, itemID, modkey, mod):
+        newdata = self.GetItemData(itemID).GetData()
+        if modkey == None:
+            modkey = newdata[1]
+        if mod == None:
+            mod = newdata[2]
+        self.SetItemData(itemID, wx.TreeItemData((newdata[0],modkey,mod)))
+        self.SetItemTextColour(itemID, '#B20000')
+        parent = self.GetItemParent(itemID)
+        if not self.GetItemData(parent).GetData()[2]:
+            self.Modified(parent, None, True)
+        

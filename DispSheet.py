@@ -45,11 +45,20 @@ class DispSheet(sheet.CSheet):
 
     def OnGridCellChange(self, event):
         key = self.GetCellValue(event.GetRow(), 0)
+        try:
+            key = int(key)
+        except:
+            pass
+        modkey = None
+        mod = None
         if event.GetCol() > 0: # changing a value
             self.data[key] = Utility.TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
+            mod = True
         else:                  # changing an attribute
             newkey = TryToParse(self.GetCellValue(event.GetRow(), event.GetCol()))
             self.data[newkey] = self.data.pop(key)
+            modkey = True
+        self.tree.Modified(self.children[event.GetRow()] ,modkey, mod)
 
     def OnGridCellSelected(self, event):
         #remove editor

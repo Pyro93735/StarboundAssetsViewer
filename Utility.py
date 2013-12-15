@@ -20,7 +20,7 @@ class MyFile():
     
     def Tuple(self):
         SingleToTuple(self.data)
-        self.data = (self.data,False)
+        self.data = (self.data,False,False)
     
     def HasAttr(self, key):
         return key in self.data
