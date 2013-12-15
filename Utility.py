@@ -7,7 +7,10 @@ class MyFile():
     def __init__(self, fileLocation):
         self.loc = fileLocation
 
-    def Open(self):
+    def Open(self, perLoc):
+        self.mod  = False
+        self.perLoc = perLoc
+        self.tempLoc = None
         file = open(self.loc, 'r') 
         toParse = file.read()
         file.close()
@@ -31,6 +34,9 @@ class MyFile():
         file.write(toSave)
         file.flush()
         file.close()
+        
+    def Modified(self):
+        pass
 
         
 def TryToParse(string):

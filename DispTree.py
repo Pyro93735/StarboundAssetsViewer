@@ -24,7 +24,8 @@ class DispTree(wx.TreeCtrl):
             self.sheet.populate(self.GetItemParent(event.GetItem()), self)
             #select cell
         
-    def populate(self, data):
+    def populate(self, data, file):
+        self.file = file
         self.DeleteAllItems()
         root = self.AddRoot("Root ")
         self.AddToTree(root, data)

@@ -60,7 +60,7 @@ class FilePanel(wx.Panel):
         
     def onLoad(self, file):
         savefile = Utility.MyFile(SAVEFILE)
-        savefile.Open()
+        savefile.Open(0)
         self.baseDirs = savefile.data[:] #make a copy instead of reference
         for file in self.baseDirs:
             self.fileSelector.populate(os.walk(file))
@@ -113,9 +113,9 @@ class FileViewer(sheet.CSheet):
 
     def OpenFile(self, row): 
         self.SetGridCursor(row, 0)
-        self.files[row].Open()
+        self.files[row].Open(row)
         self.files[row].Tuple()
-        self.parent.tree.populate(self.files[row].data)
+        self.parent.tree.populate(self.files[row].data, self.files[row])
         self.lastSelected = row
         self.parent.parent.SetStatusText(self.files[row].loc)
         
