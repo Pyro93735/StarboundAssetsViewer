@@ -6,19 +6,23 @@ import Utility
 __name__ = "DispTree"
 
 class DispTree(wx.TreeCtrl):
-    def __init__(self, parent):
-        wx.TreeCtrl.__init__(self, parent, size=(400,600), style=wx.TR_EDIT_LABELS | wx.TR_DEFAULT_STYLE | wx.TR_TWIST_BUTTONS)
+    def __init__(self, parent, sheet):
+        wx.TreeCtrl.__init__(self, parent, style=wx.TR_EDIT_LABELS | wx.TR_DEFAULT_STYLE | wx.TR_TWIST_BUTTONS)
+        self.sheet = sheet
+        self.SetMinSize((200,400))
         self.parent = parent
         #root = self.AddRoot("Root")
         self.Bind(wx.EVT_TREE_ITEM_ACTIVATED, self.ItemActivated)
         
     def ItemActivated(self, event):
-        data = self.GetItemData(event.GetItem()).GetData()
-        if type(data) is dict or list:
-            self.parent.sheet1.populate(event.GetItem(), self)
+        #data = self.GetItemData(event.GetItem()).GetData()
+        #print str(type(data)) + " " + str(data)
+        if self.ItemHasChildren(event.GetItem()):  #type(data) is dict or list:
+            self.sheet.populate(event.GetItem(), self)
         else:
             print "trying stuff"
-            self.parent.sheet1.populate(self.GetItemParent(event.GetItem()), self)
+            print "trying stuff"
+            self.sheet.populate(self.GetItemParent(event.GetItem()), self)
             #select cell
         
     def populate(self, data):
@@ -26,7 +30,7 @@ class DispTree(wx.TreeCtrl):
         root = self.AddRoot("Root ")
         self.AddToTree(root, data)
         self.Expand(root)
-        self.parent.sheet1.populate(root, self)
+        self.sheet.populate(root, self)
         
     def AddToTree(self, itemID, data):
         if type(data) is dict:
@@ -47,6 +51,7 @@ class DispTree(wx.TreeCtrl):
                     newnode = self.AppendItem(itemID, str(item))
                 index = index + 1
         else:
+            
             self.AppendText(itemID, str(data))
             
     def AppendText(self, itemID, text):

@@ -25,7 +25,6 @@ class MyFile():
         file.write(toSave)
         file.flush()
         file.close()
-
         
 def TryToParse(string):
     try:

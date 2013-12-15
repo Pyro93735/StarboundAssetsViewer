@@ -5,6 +5,74 @@ import Utility
 
 __name__ = "FileViewer"
 
+SAVEFILE = "save.sae"
+
+class FilePanel(wx.Panel):
+    def __init__(self, parent, tree):
+        wx.Panel.__init__(self, parent, size=(150,20))
+        self.tree = tree
+        box = wx.GridBagSizer()
+        self.SetSizer(box)
+        
+        filterPanel = wx.Panel(self)
+        filterBox = wx.GridBagSizer()
+        filterPanel.SetSizer(filterBox)
+        searchBar = wx.TextCtrl(filterPanel)
+        filterButton = wx.Button(filterPanel, -1, 'F',size=(20,20))
+        clearButton = wx.Button(filterPanel, -1, 'C',size=(20,20))
+        #clearButton = wx.BitmapButton(self, -1, bitmap=wx.Image('clear.ico', wx.BITMAP_TYPE_ANY).ConvertToBitmap(), size=(20,20))
+        filterBox.Add(searchBar,(0,0), (1,1), wx.EXPAND)
+        filterBox.Add(filterButton,(0,1))
+        filterBox.Add(clearButton,(0,2))
+        box.Add(filterPanel,(0,0),(1,1),wx.EXPAND)
+
+        baseDirPanel = wx.Panel(self)
+        baseDirBox = wx.GridBagSizer()
+        baseDirPanel.SetSizer(baseDirBox)
+        openButton = wx.Button(baseDirPanel,-1,label="Open", size=(37,20))
+        saveButton = wx.Button(baseDirPanel,-1,label="Save", size=(37,20))
+        clearButton = wx.Button(baseDirPanel,-1,label="Clear", size=(37,20))
+        loadButton = wx.Button(baseDirPanel,-1,label="Load", size=(37,20))
+        openButton.Bind(wx.EVT_BUTTON, self.onOpen)
+        saveButton.Bind(wx.EVT_BUTTON, self.onSave)
+        clearButton.Bind(wx.EVT_BUTTON, self.onClear)
+        loadButton.Bind(wx.EVT_BUTTON, self.onLoad)
+        baseDirBox.Add(openButton, (0,0))
+        baseDirBox.Add(loadButton, (0,1))
+        baseDirBox.Add(saveButton, (0,2))
+        baseDirBox.Add(clearButton, (0,3))
+        box.Add(baseDirPanel, (1,0),(1,1),wx.EXPAND)
+        
+        baseDirs = []
+        self.fileSelector = FileViewer(self)
+        self.fileSelector.SetMinSize((150,400))
+        box.Add(self.fileSelector, (2,0),(1,1),wx.EXPAND)
+        
+    def onOpen(self, event): 
+        dirText = wx.DirDialog(self, "Choose a directory:",
+                           style=wx.DD_DEFAULT_STYLE
+                           )
+        if dirText.ShowModal() == wx.ID_OK:
+            self.baseDirs.append(dirText.GetPath())
+            self.fileSelector.populate(os.walk(dirText.GetPath()))
+        dirText.Destroy()
+        
+    def onLoad(self, file):
+        savefile = Utility.MyFile(SAVEFILE)
+        savefile.Open()
+        self.baseDirs = savefile.data[:] #make a copy instead of reference
+        for file in self.baseDirs:
+            self.fileSelector.populate(os.walk(file))
+
+    def onSave(self, event):
+        savefile = Utility.MyFile(SAVEFILE)
+        savefile.data = self.baseDirs[:]
+        savefile.Save()
+
+    def onClear(self, event):
+        self.fileSelector.cleanUp()
+        self.baseDirs = []
+        
 class FileViewer(sheet.CSheet):
 
     def __init__(self, parent):
