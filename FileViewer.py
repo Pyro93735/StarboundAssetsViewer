@@ -98,7 +98,7 @@ class FileViewer(sheet.CSheet):
 
     def populate(self, results):
         index = self.GetNumberRows()
-        excludedFiletypes = ['.png','.lua','.wav', '.psd', '.log'] 
+        excludedFiletypes = ['.png','.lua','.wav', '.psd', '.log']
         for root, dirs, files in results: 
             for file in files:
                  if not file.endswith(tuple(excludedFiletypes)):
@@ -114,6 +114,7 @@ class FileViewer(sheet.CSheet):
     def OpenFile(self, row): 
         self.SetGridCursor(row, 0)
         self.files[row].Open()
+        self.files[row].Tuple()
         self.parent.tree.populate(self.files[row].data)
         self.lastSelected = row
         self.parent.parent.SetStatusText(self.GetFileName(row))

@@ -16,11 +16,9 @@ class DispTree(wx.TreeCtrl):
         
     def ItemActivated(self, event):
         #data = self.GetItemData(event.GetItem()).GetData()
-        #print str(type(data)) + " " + str(data)
         if self.ItemHasChildren(event.GetItem()):  #type(data) is dict or list:
             self.sheet.populate(event.GetItem(), self)
         else:
-            print "trying stuff"
             print "trying stuff"
             self.sheet.populate(self.GetItemParent(event.GetItem()), self)
             #select cell
@@ -33,26 +31,25 @@ class DispTree(wx.TreeCtrl):
         self.sheet.populate(root, self)
         
     def AddToTree(self, itemID, data):
-        if type(data) is dict:
-            self.SetItemData(itemID, wx.TreeItemData(data))
+        #Utility.COUT(data)
+        self.SetItemData(itemID, wx.TreeItemData(data))
+        if type(data[0]) is dict:
             self.AppendText(itemID, "{")
-            for key, val in  data.iteritems():
+            for key, val in  data[0].iteritems():
                 newnode = self.AppendItem(itemID, str(key) + " : ")
                 self.AddToTree(newnode, val)
-        elif type(data) is list:
-            self.SetItemData(itemID, wx.TreeItemData(data))
+        elif type(data[0]) is list:
             self.AppendText(itemID, "[")
             index = 0
-            for item in data:
-                if type(item) is dict or type(item) is list:
+            for item in data[0]:
+                if type(item[0]) is dict or type(item[0]) is list:
                     newnode = self.AppendItem(itemID, str(index) + " ")
                     self.AddToTree(newnode, item)
                 else:
-                    newnode = self.AppendItem(itemID, str(item))
+                    newnode = self.AppendItem(itemID, str(item[0]))
                 index = index + 1
         else:
-            
-            self.AppendText(itemID, str(data))
+            self.AppendText(itemID, str(data[0]))
             
     def AppendText(self, itemID, text):
         self.SetItemText(itemID, self.GetItemText(itemID) + text)

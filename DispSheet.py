@@ -23,7 +23,7 @@ class DispSheet(sheet.CSheet):
     def populate(self, node, tree):
         self.node = node
         self.tree = tree
-        self.data = tree.GetItemData(node).GetData()
+        self.data = tree.GetItemData(node).GetData()[0]
         self.SetNumberRows(tree.GetChildrenCount(node, False))
         self.children = []
         self.Unbind(wx.grid.EVT_GRID_CELL_CHANGE)
@@ -33,12 +33,12 @@ class DispSheet(sheet.CSheet):
         if type(self.data) is dict:
             for key in self.data.iterkeys():
                 self.SetCellValue(index, 0, str(key))
-                self.SetCellValue(index, 1, str(self.data[key]))
+                self.SetCellValue(index, 1, str(self.data[key][0]))
                 index = index + 1
         else:   #assume type array
             for i in self.data:
                 self.SetCellValue(index, 0, str(index))
-                self.SetCellValue(index, 1, str(i))
+                self.SetCellValue(index, 1, str(i[0]))
                 index = index + 1
         self.AutoSize()
         self.Bind(wx.grid.EVT_GRID_CELL_CHANGE, self.OnGridCellChange)
