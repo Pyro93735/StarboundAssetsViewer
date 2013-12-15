@@ -11,6 +11,7 @@ class FilePanel(wx.Panel):
     def __init__(self, parent, tree):
         wx.Panel.__init__(self, parent, size=(150,20))
         self.tree = tree
+        self.parent = parent
         box = wx.GridBagSizer()
         self.SetSizer(box)
         
@@ -115,7 +116,7 @@ class FileViewer(sheet.CSheet):
         self.files[row].Open()
         self.parent.tree.populate(self.files[row].data)
         self.lastSelected = row
-        self.parent.SetStatusText(self.GetFileName(row))
+        self.parent.parent.SetStatusText(self.GetFileName(row))
         
     def SpawnContextMenu(self, event):
         self.SelectRow(event.GetRow())

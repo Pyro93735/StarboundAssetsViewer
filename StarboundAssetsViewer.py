@@ -28,7 +28,8 @@ class MainApp(wx.Frame):
         box.AddGrowableCol(2)
         box.AddGrowableRow(0)
         self.SetSizerAndFit(box)
-        #self.CreateStatusBar()
+
+        self.CreateStatusBar()
         self.Centre()
         self.Show(True)
 
