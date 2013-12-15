@@ -44,7 +44,7 @@ class FilePanel(wx.Panel):
         baseDirBox.Add(clearButton, (0,3))
         box.Add(baseDirPanel, (1,0),(1,1),wx.EXPAND)
         
-        baseDirs = []
+        self.baseDirs = []
         self.fileSelector = FileViewer(self)
         self.fileSelector.SetMinSize((150,400))
         box.Add(self.fileSelector, (2,0),(1,1),wx.EXPAND)

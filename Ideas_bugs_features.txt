@@ -1,9 +1,7 @@
-Resize File list pane (maybe 100?)->User resize able panes
 Context menu
     filelist-> open, save, save as, discard, new, delete?
     Sheet->insert before, insert after, delete, expand, copy? paste?
     tree->delete? anything?
-what to insert (dict, array, keypair)
 selecting row on sheet highlights on tree (make sure is visible method)
 search bar
     filelist->act as filter, only display files with term in name(or ext)
